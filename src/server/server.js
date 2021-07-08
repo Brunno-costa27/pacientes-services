@@ -19,10 +19,12 @@ async function start(api,repository){
 
     api(app,repository);
 
-    server = app.listen(8080);
+    server = app.listen(3333, () => {
+        console.log("rodando!");
+    });
 
     return server;
 
 }
 
-module.exports = start;
+module.exports = {start};

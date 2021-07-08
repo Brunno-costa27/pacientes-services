@@ -11,7 +11,7 @@ async function pegarTodosPacientes(){
 
     } catch (error) {
         
-        console.log("deu errado!");
+        console.log("deu errado na função pegar todos!");
     }
 
 }
@@ -27,7 +27,7 @@ async function obterPacienteId(id){
 
     } catch (error) {
         
-        console.log("deu errado!");
+        console.log("deu errado na obeter id!");
     }
 
 }
@@ -43,7 +43,7 @@ async function deletarPaciente(id){
 
     } catch (error) {
         
-        console.log("deu errado!");
+        console.log("deu errado na função deletar!");
     }
 
 }
