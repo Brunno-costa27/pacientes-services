@@ -18,16 +18,18 @@ async function pegarTodosPacientes(){
 
 async function obterPacienteId(id){
 
+    const id1 = id;    
+    console.log(id1);
     try {
-        
      await db.connect();
-     const result =  await db.query("SELECT * FROM pacientes");// falta mudar a query
+     const result =  await db.query(`SELECT * FROM pacientes WHERE id = ${id1}`);// falta mudar a query
      console.log('Todos os pacientes pelo id');
+
      return result;
 
     } catch (error) {
         
-        console.log("deu errado na obeter id!");
+        console.log("deu errado ao obter id!");
     }
 
 }
@@ -35,9 +37,9 @@ async function obterPacienteId(id){
 async function deletarPaciente(id){
 
     try {
-        
+     const id1 = id; 
      await db.connect();
-     const result =  await db.query("SELECT * FROM pacientes");// falta mudar a query
+     const result =  await db.query("SELECT * FROM pacientes id = `${id1}`");// falta mudar a query
      console.log('Todos os pacientes pelo id');
      return result;
 
