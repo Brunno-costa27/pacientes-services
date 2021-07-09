@@ -22,7 +22,7 @@ async function obterPacienteId(id){
     console.log(id1);
     try {
      await db.connect();
-     const result =  await db.query(`SELECT * FROM pacientes WHERE id = ${id1}`);// falta mudar a query
+     const result =  await db.query(`SELECT * FROM pacientes WHERE id = ${id1}`);
      console.log('Todos os pacientes pelo id');
 
      return result;
@@ -36,10 +36,11 @@ async function obterPacienteId(id){
 
 async function deletarPaciente(id){
 
+    const id2 = id; 
+    console.log(id2);
     try {
-     const id1 = id; 
      await db.connect();
-     const result =  await db.query("SELECT * FROM pacientes id = `${id1}`");// falta mudar a query
+     const result =  await db.query(`DELETE  FROM pacientes WHERE id = ${id2}`);// falta mudar a query
      console.log('Todos os pacientes pelo id');
      return result;
 
