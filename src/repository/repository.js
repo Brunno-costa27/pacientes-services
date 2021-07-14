@@ -19,7 +19,6 @@ async function pegarTodosPacientes(){
 async function obterPacienteId(id){
 
     const id1 = id;    
-    console.log(id1);
     try {
      await db.connect();
      const result =  await db.query(`SELECT * FROM pacientes WHERE id = ${id1}`);
@@ -40,7 +39,7 @@ async function deletarPaciente(id){
     console.log(id2);
     try {
      await db.connect();
-     const result =  await db.query(`DELETE  FROM pacientes WHERE id = ${id2}`);// falta mudar a query
+     const result =  await db.query(`DELETE  FROM pacientes WHERE id = ${id2}`);
      console.log('Todos os pacientes pelo id');
      return result;
 
@@ -48,7 +47,22 @@ async function deletarPaciente(id){
         
         console.log("deu errado na função deletar!");
     }
+}
+
+async function cadastrarPacientes(id,nome,idade,endereco){
+
+
+    try {
+        await db.connect();
+        const result =  await db.query(`insert into pacientes values(${id},'${nome}','${idade}','${endereco}')`);
+        console.log('Cadastrando pacientes!');
+        return result;
+        
+    } catch (error) {
+       
+        console.log("deu errado ao cadastrar pacientes!");
+    }
 
 }
 
-module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente }
+module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes}

@@ -1,10 +1,20 @@
 module.exports = (app,repository) => {
 
+    app.post('/pacientes', async (req, res) => {
+
+        
+        const {id,nome,idade,endereco} = req.body;
+       
+            const paciente = await repository.cadastrarPacientes(id,nome,idade,endereco); // tratar com try catch
+       
+        res.status(201).json(paciente);
+    });
+    
     app.get('/pacientes', async (req, res) => {
 
+        
         const paciente = await repository.pegarTodosPacientes(); // tratar com try catch
         
-        console.log(paciente);
         res.json(paciente);
     });
 
@@ -12,7 +22,6 @@ module.exports = (app,repository) => {
 
         const uuid = req.params.id;
         const id = await repository.obterPacienteId(uuid);// tratar com try catch
-        console.log(id);
         res.json(id);
     });
 
