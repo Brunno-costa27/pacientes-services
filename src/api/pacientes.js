@@ -3,9 +3,9 @@ module.exports = (app,repository) => {
     app.post('/pacientes', async (req, res) => {
 
         
-        const {id,nome,idade,endereco} = req.body;
+        const {id,nome,cidade,senha} = req.body;
        
-            const paciente = await repository.cadastrarPacientes(id,nome,idade,endereco); // tratar com try catch
+            const paciente = await repository.cadastrarPacientes(id,nome,cidade,senha); // tratar com try catch
        
         res.status(201).json(paciente);
     });
@@ -32,6 +32,13 @@ module.exports = (app,repository) => {
         const id = await repository.deletarPaciente(uuid);// tratar com try catch
         console.log(id);
         res.json(id);
+    });
+
+    app.get('/requisicoes', async (req, res) => {
+
+        const paciente = await repository.pegarTodasRequisicoes(); // tratar com try catch
+        
+        res.json(paciente);
     });
 
 }

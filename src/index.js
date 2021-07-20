@@ -7,7 +7,6 @@
 
     try {
         await server.start(paciente, repository);
-        console.log("Deu certo!");
     } catch (error) {
         console.log("Deu errado aqui!");
         

@@ -5,7 +5,7 @@ async function pegarTodosPacientes(){
     try {
         
      await db.connect();
-     const result =  await db.query("SELECT * FROM pacientes");
+     const result =  await db.query("SELECT * FROM login");
      console.log('Todos os pacientes');
      return result;
 
@@ -16,12 +16,28 @@ async function pegarTodosPacientes(){
 
 }
 
+async function pegarTodasRequisicoes(){
+
+    try {
+        
+     await db.connect();
+     const result =  await db.query(`select login.nome,cadastro.medicamento from login INNER JOIN cadastro ON cadastro.id_login = login.id`);
+     console.log('lista de medicamentos');
+     return result;
+
+    } catch (error) {
+        
+        console.log("deu errado na função pegar todos os mendicamentos!");
+    }
+
+}
+
 async function obterPacienteId(id){
 
     const id1 = id;    
     try {
      await db.connect();
-     const result =  await db.query(`SELECT * FROM pacientes WHERE id = ${id1}`);
+     const result =  await db.query(`SELECT * FROM login WHERE id = ${id1}`);
      console.log('Todos os pacientes pelo id');
 
      return result;
@@ -39,7 +55,7 @@ async function deletarPaciente(id){
     console.log(id2);
     try {
      await db.connect();
-     const result =  await db.query(`DELETE  FROM pacientes WHERE id = ${id2}`);
+     const result =  await db.query(`DELETE  FROM login WHERE id = ${id2}`);
      console.log('Todos os pacientes pelo id');
      return result;
 
@@ -49,12 +65,12 @@ async function deletarPaciente(id){
     }
 }
 
-async function cadastrarPacientes(id,nome,idade,endereco){
+async function cadastrarPacientes(id,nome,cidade,senha){
 
 
     try {
         await db.connect();
-        const result =  await db.query(`insert into pacientes values(${id},'${nome}','${idade}','${endereco}')`);
+        const result =  await db.query(`insert into login values(${id},'${nome}','${cidade}','${senha}')`);
         console.log('Cadastrando pacientes!');
         return result;
         
@@ -65,4 +81,4 @@ async function cadastrarPacientes(id,nome,idade,endereco){
 
 }
 
-module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes}
+module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes}
