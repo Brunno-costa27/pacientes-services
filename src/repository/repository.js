@@ -57,12 +57,13 @@ async function deletarPaciente(id){
     }
 }
 
-async function cadastrarPacientes(id,nome,cidade,senha){
+async function cadastrarPacientes(nome,cidade,senha){
+
 
 
     try {
         await db.connect();
-        const result =  await db.query(`insert into login values(${id},'${nome}','${cidade}','${senha}')`);
+        const result =  await db.query(`insert into login (nome,cidade,senha) values('${nome}','${cidade}','${senha}')`);
         return result;
         
     } catch (error) {
@@ -71,5 +72,7 @@ async function cadastrarPacientes(id,nome,cidade,senha){
     }
 
 }
+
+
 
 module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes}

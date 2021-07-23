@@ -1,28 +1,35 @@
-module.exports = (app,repository) => {
+module.exports = (app, repository) => {
+
 
     app.post('/pacientes', async (req, res) => {
 
-        
-        const {id,nome,cidade,senha} = req.body;
-       
-        try {
-            const paciente = await repository.cadastrarPacientes(id,nome,cidade,senha); 
-            res.status(201).json(paciente);
-        } catch (error) {
-            res.status(401).json({message: "erro ao cadastrar paciente"});
+        const pacienteExiste = await repository.pegarTodosPacientes();
+
+        const { nome, cidade, senha } = req.body;
+
+        const alreadyExists = pacienteExiste.some((user) => user.nome === nome);
+
+        if(alreadyExists){
+            return res.status(400).json({ error: 'Username already exists' });
         }
-       
+        try {
+            const paciente = await repository.cadastrarPacientes(nome, cidade, senha);
+            res.status(201).json({paciente});
+        } catch (error) {
+            res.status(401).json({ message: "erro ao cadastrar paciente" });
+        }
+
     });
-    
+
     app.get('/pacientes', async (req, res) => {
 
-     try {
-         const paciente = await repository.pegarTodosPacientes(); 
-         res.json(paciente);
-     } catch (error) {
-         res.status(400).send();
-     }   
-        
+        try {
+            const paciente = await repository.pegarTodosPacientes();
+            res.json(paciente);
+        } catch (error) {
+            res.status(400).send();
+        }
+
     });
 
     app.get('/pacientes/:id', async (req, res) => {
@@ -44,19 +51,19 @@ module.exports = (app,repository) => {
             const id = await repository.deletarPaciente(uuid);
             res.json(id);
         } catch (error) {
-            res.status(400).send();            
+            res.status(400).send();
         }
     });
 
     app.get('/requisicoes/:id', async (req, res) => {
         const id = req.params.id;
         try {
-            const paciente = await repository.pegarTodasRequisicoes(id); 
+            const paciente = await repository.pegarTodasRequisicoes(id);
             res.json(paciente);
         } catch (error) {
             res.status(400).send();
         }
-        
+
     });
 
 }
