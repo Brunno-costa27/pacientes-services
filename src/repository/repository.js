@@ -73,6 +73,18 @@ async function cadastrarPacientes(nome,cidade,senha){
 
 }
 
+async function atualizarPaciente(id,nome){
 
+    const id2 = id; 
+    try {
+     await db.connect();
+     const result =  await db.query(`UPDATE login SET nome = '${nome}' WHERE id = ${id}`);
+     return result;
 
-module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes}
+    } catch (error) {
+        
+        console.log("deu errado na função deletar!");
+    }
+}
+
+module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes,atualizarPaciente}
