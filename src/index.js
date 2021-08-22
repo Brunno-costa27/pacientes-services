@@ -4,6 +4,7 @@
     const paciente = require("./api/pacientes");
     const server = require("./server/server");
     const repository = require("./repository/repository");
+    
 
     try {
         await server.start(paciente, repository);

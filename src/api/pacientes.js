@@ -1,23 +1,26 @@
-
+const passport = require('passport');
+const { ensureAuth, ensureGuest } = require('../middleware/auth')
 module.exports = (app, repository) => {
 
     app.post('/pacientes', async (req, res) => {
 
         const pacienteExiste = await repository.pegarTodosPacientes();
 
-        const { nome, cidade, senha } = req.body;
-        console.log(nome, cidade, senha);
+        const { id, nome, email } = req.body;
+        console.log(nome, id, email);
 
-        const alreadyExists = pacienteExiste.some((user) => user.nome === nome);
+        const alreadyExists = pacienteExiste.some((user) => user.email === email);
 
         if (alreadyExists) {
-            return res.status(400).json({ error: 'Username already exists' });
-        }
-        try {
-            const paciente = await repository.cadastrarPacientes(nome, cidade, senha);
-            res.status(201).json({ paciente });
-        } catch (error) {
-            res.status(401).json({ message: "erro ao cadastrar paciente" });
+            return res.status(400).json({ error: 'Paciente já existe!' });
+        }else{
+
+            try {
+                const paciente = await repository.cadastrarPacientes(id,nome,email);
+                res.status(201).json({message: 'Paciente cadastrado com sucesso!'});
+            } catch (error) {
+                res.status(401).json({ message: "erro ao cadastrar paciente" });
+            }
         }
 
     });
@@ -77,19 +80,46 @@ module.exports = (app, repository) => {
         }
     });
 
-    app.post('/autenticacao', async (req, res) => {
-
-        const pacienteExiste = await repository.pegarTodosPacientes();
-
-        const { nome, senha } = req.body;
-
-        const pacienteAlreadyExists = pacienteExiste.find((user) => user.nome === nome && user.senha === senha);
-        if(pacienteAlreadyExists){
-            res.status(200).json(pacienteAlreadyExists);
-        }else{
-            res.status(400).json({message: "paciente não existe!"});
+      // Middleware de autenticação que verifica se o usuário está logado
+      const isLoggedIn = (req, res, next) => {
+        if (req.user) {
+            next();
+        } else {
+            res.sendStatus(401);
         }
+    }
 
-    });
+    // // Exemplo de rotas protegidas e desprotegidas
+    app.get('/', ensureGuest,(req, res) => res.send('Examplo de página inicial!'))
+    app.get('/failed', (req, res) => res.send('Você falhou ao entrar!'))
+    app.get('/login', ensureAuth,(req, res) => {
+
+        // res.send('Examplo de página inicial!');
+        console.log(req.user);
+    })
+
+
+    // // Nesta rota você pode ver que se o usuário estiver logado, você pode acessar suas informações em: req.user
+    app.get('/good', isLoggedIn, async (req, res) => {
+
+        res.send(`Bem vindo ${req.user.id}!`);
+    })
+        
+
+    // // Rotas de autenticação
+    app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+    app.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
+         function(req, res) {
+            // Autenticação bem-sucedida, redirecionar para casa.
+            res.redirect('/good');
+        }
+    );
+
+    app.get('/logout', (req, res) => {
+        req.session = null;
+        req.logout();
+        res.redirect('/');
+    })
 
 }

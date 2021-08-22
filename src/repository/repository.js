@@ -1,5 +1,7 @@
 const db = require('../config/database')
 
+const axios = require('axios');
+
 async function pegarTodosPacientes(){
 
     try {   
@@ -57,13 +59,12 @@ async function deletarPaciente(id){
     }
 }
 
-async function cadastrarPacientes(nome,cidade,senha){
-
+async function cadastrarPacientes(id,nome,email){
 
 
     try {
         await db.connect();
-        const result =  await db.query(`insert into login (nome,cidade,senha) values('${nome}','${cidade}','${senha}')`);
+        const result =  await db.query(`insert into login (id,nome,email) values(${id},'${nome}','${email}')`);
         return result;
         
     } catch (error) {
@@ -86,5 +87,6 @@ async function atualizarPaciente(id,nome){
         console.log("deu errado na função deletar!");
     }
 }
+
 
 module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes,atualizarPaciente}
