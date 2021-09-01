@@ -69,6 +69,16 @@ module.exports = (app, repository) => {
 
     });
 
+    app.get('/requisicoes', async (req, res) => {
+        try {
+            const paciente = await repository.todasRequisicoes();
+            res.json(paciente);
+        } catch (error) {
+            res.status(400).send();
+        }
+
+    });
+
     app.put('/pacientes/:id', async (req, res) => {
         const id = req.params.id;
         const { nome } = req.body;

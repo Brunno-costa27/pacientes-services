@@ -8,6 +8,7 @@ const paciente = pgp({
     database: "pacientes",
     password: "cursodeti27!",
     port: 5432
+   
 })
 
 module.exports = paciente;

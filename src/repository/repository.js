@@ -30,6 +30,21 @@ async function pegarTodasRequisicoes(id){
 
 }
 
+async function todasRequisicoes(){
+
+    try { 
+     
+     await db.connect();
+     const result =  await db.query(`select * from cadastro`);
+     return result;
+
+    } catch (error) {
+        
+        console.log("deu errado na função pegar todos as requisições!");
+    }
+
+}
+
 async function obterPacienteId(id){
 
     const id1 = id;    
@@ -89,4 +104,4 @@ async function atualizarPaciente(id,nome){
 }
 
 
-module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes,atualizarPaciente}
+module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes,atualizarPaciente,todasRequisicoes}
