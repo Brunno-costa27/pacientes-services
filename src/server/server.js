@@ -38,7 +38,7 @@ async function start(api, repository) {
 
     api(app, repository);
 
-    server = app.listen(3333, () => {
+    server = app.listen(8080, () => {
         console.log("rodando!");
     });
 

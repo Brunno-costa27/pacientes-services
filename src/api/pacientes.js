@@ -1,5 +1,6 @@
 const passport = require('passport');
 const { ensureAuth, ensureGuest } = require('../middleware/auth')
+const axios = require('axios');
 module.exports = (app, repository) => {
 
     app.post('/pacientes', async (req, res) => {
@@ -24,6 +25,22 @@ module.exports = (app, repository) => {
         }
 
     });
+
+    app.get('/teste', async (req, res) => {
+
+        try {
+            //Response é a resposta do axios , mas eu tiro o data de dentro do response com a desestruturação
+            const { data } = await axios('http://localhost:3333/historico');
+            console.log(data[0].id_historico);
+            return res.json(data);
+    
+        } catch (error) {
+            console.log('Errou!');
+        }
+
+    });
+    
+      
 
     app.get('/pacientes', async (req, res) => {
 
