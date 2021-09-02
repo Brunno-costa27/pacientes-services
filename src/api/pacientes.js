@@ -31,7 +31,11 @@ module.exports = (app, repository) => {
         try {
             //Response é a resposta do axios , mas eu tiro o data de dentro do response com a desestruturação
             const { data } = await axios('http://localhost:3333/historico');
-            console.log(data[0].id_historico);
+            for (const key in data) { // percorre o array de objetos que vem do portal web farmacia
+                if (data[key].medicamento) {
+                    console.log(data[key].medicamento);
+                }
+            }
             return res.json(data);
     
         } catch (error) {
