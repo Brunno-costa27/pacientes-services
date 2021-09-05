@@ -89,6 +89,22 @@ async function cadastrarPacientes(id,nome,email){
 
 }
 
+async function cadastrarRequisicao(medicamento, medico, quantidade, id_login, create_date){
+
+
+    try {
+        await db.connect();
+        const result =  await db.query(`insert into cadastro (medicamento, medico, quantidade, id_login, create_date) values('${medicamento}','${medico}',${quantidade},${id_login},'${create_date}')`);
+        return result;
+        
+    } catch (error) {
+       
+        console.log("deu errado ao cadastrar medicamentos!");
+        return "deu errado ao cadastrar medicamentos!";
+    }
+
+}
+
 async function atualizarPaciente(id,nome){
 
     const id2 = id; 
@@ -104,4 +120,4 @@ async function atualizarPaciente(id,nome){
 }
 
 
-module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes,atualizarPaciente,todasRequisicoes}
+module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes,atualizarPaciente,todasRequisicoes,cadastrarRequisicao}

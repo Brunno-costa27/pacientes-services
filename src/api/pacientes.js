@@ -3,6 +3,7 @@ const { ensureAuth, ensureGuest } = require('../middleware/auth')
 const axios = require('axios');
 module.exports = (app, repository) => {
 
+    // cadastrar pacientes
     app.post('/pacientes', async (req, res) => {
 
         const pacienteExiste = await repository.pegarTodosPacientes();
@@ -26,6 +27,27 @@ module.exports = (app, repository) => {
 
     });
 
+    app.post('/requisicao', async (req, res) => {
+
+        const pacienteExiste = await repository.pegarTodosPacientes();
+        const { medicamento, medico, quantidade, id_login, create_date } = req.body;
+        console.log(medicamento, medico, quantidade,id_login, create_date);
+
+        const pacienteEncontrado = pacienteExiste.some(user => user.id === id_login.toString());
+        
+        if (!pacienteEncontrado) {
+            return res.status(400).json({ error: 'Paciente não existe!' });
+        }else{
+
+            try {
+                const paciente = await repository.cadastrarRequisicao( medicamento, medico, quantidade, id_login, create_date );
+                res.status(201).json({message: 'Paciente cadastrado com sucesso!'});
+            } catch (error) {
+                res.status(401).json({ message: "erro ao cadastrar paciente" });
+            }
+        }
+    });
+
     app.get('/teste', async (req, res) => {
 
         try {
@@ -42,10 +64,9 @@ module.exports = (app, repository) => {
             console.log('Errou!');
         }
 
-    });
-    
-      
+    });   
 
+    // pegar todos os pacientes
     app.get('/pacientes', async (req, res) => {
 
         try {
@@ -68,6 +89,7 @@ module.exports = (app, repository) => {
         }
     });
 
+    // deletar o paciente pelo id
     app.delete('/pacientes/:id', async (req, res) => {
 
         const uuid = req.params.id;
@@ -79,17 +101,29 @@ module.exports = (app, repository) => {
         }
     });
 
+    // pegar todas as requesiçoes pelo id
     app.get('/requisicoes/:id', async (req, res) => {
-        const id = req.params.id;
-        try {
-            const paciente = await repository.pegarTodasRequisicoes(id);
-            res.json(paciente);
-        } catch (error) {
-            res.status(400).send();
+        const id_log = req.params.id;
+        const paciente = await repository.todasRequisicoes();
+
+        const pacienteAlredyExist = paciente.some(id => id.id_login === id_log);
+        console.log(pacienteAlredyExist);
+        if(!pacienteAlredyExist){
+            res.status(400).json({error: 'paciente não existe'});
+        }else{
+
+            try {
+                const paciente = await repository.pegarTodasRequisicoes(id_log);
+                res.json(paciente);
+            } catch (error) {
+                res.status(400).send();
+            }
         }
+
 
     });
 
+    // pegar todas as requisicoes do sistema
     app.get('/requisicoes', async (req, res) => {
         try {
             const paciente = await repository.todasRequisicoes();
@@ -100,6 +134,7 @@ module.exports = (app, repository) => {
 
     });
 
+    // atualizar pacientes
     app.put('/pacientes/:id', async (req, res) => {
         const id = req.params.id;
         const { nome } = req.body;
