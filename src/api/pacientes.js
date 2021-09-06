@@ -48,6 +48,7 @@ module.exports = (app, repository) => {
         }
     });
 
+    // essa rota será a que vem a resposta do portal farmacia e mostrará as requisições para cada clinte de acordo com o id que vier na rota
     app.get('/teste', async (req, res) => {
 
         try {
