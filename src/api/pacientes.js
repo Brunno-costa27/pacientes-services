@@ -49,18 +49,18 @@ module.exports = (app, repository) => {
     });
 
     // essa rota será a que vem a resposta do portal farmacia e mostrará as requisições para cada clinte de acordo com o id que vier na rota
-    app.get('/teste', async (req, res) => {
+    app.get('/teste/:id', async (req, res) => {
 
+        const id = req.params.id;
+        const converte = parseInt(id);
         try {
             //Response é a resposta do axios , mas eu tiro o data de dentro do response com a desestruturação
             const { data } = await axios('http://localhost:3333/historico');
-            for (const key in data) { // percorre o array de objetos que vem do portal web farmacia
-                if (data[key].medicamento) {
-                    console.log(data[key].medicamento);
-                }
-            }
-            return res.json(data);
-    
+            const nomeExiste = data.filter(x => x.id_historico);
+            const filtrar = nomeExiste.filter(x => x.id_historico === id)
+            console.log(filtrar);
+            return res.json(filtrar);
+            
         } catch (error) {
             console.log('Errou!');
         }
