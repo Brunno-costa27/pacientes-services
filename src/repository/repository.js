@@ -33,7 +33,6 @@ async function pegarTodasRequisicoes(id){
 async function todasRequisicoes(){
 
     try { 
-     
      await db.connect();
      const result =  await db.query(`select * from cadastro`);
      return result;
