@@ -30,9 +30,8 @@ module.exports = (app, repository) => {
     app.post('/requisicao', async (req, res) => {
 
         const pacienteExiste = await repository.pegarTodosPacientes();
-        const { medicamento, medico, quantidade, id_login, create_date } = req.body;
-        console.log(medicamento, medico, quantidade,id_login, create_date);
-
+        const {id_cadastro, medicamento, medico, quantidade, id_login, create_date } = req.body;
+        console.log(id_cadastro,medicamento, medico, quantidade,id_login, create_date);
         const pacienteEncontrado = pacienteExiste.some(user => user.id === id_login.toString());
         
         if (!pacienteEncontrado) {
@@ -58,7 +57,11 @@ module.exports = (app, repository) => {
             const { data } = await axios('http://localhost:3333/historico');
             const nomeExiste = data.filter(x => x.id_historico);
             const filtrar = nomeExiste.filter(x => x.id_historico === id)
-            console.log(filtrar);
+            for (const key in data) {
+                let id = data[key].id_cadastro;
+                repository.deletarRequisicao(id);
+            }
+
             return res.json(filtrar);
             
         } catch (error) {

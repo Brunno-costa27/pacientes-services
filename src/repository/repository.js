@@ -74,6 +74,20 @@ async function deletarPaciente(id){
     }
 }
 
+async function deletarRequisicao(id){
+
+    const id2 = id; 
+    try {
+     await db.connect();
+     const result =  await db.query(`DELETE  FROM cadastro WHERE id_cadastro = ${id2}`);
+     return result;
+
+    } catch (error) {
+        
+        console.log("deu errado na função deletar requisicao!");
+    }
+}
+
 async function cadastrarPacientes(id,nome,email){
 
 
@@ -120,4 +134,4 @@ async function atualizarPaciente(id,nome){
 }
 
 
-module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes,atualizarPaciente,todasRequisicoes,cadastrarRequisicao}
+module.exports = { pegarTodosPacientes,obterPacienteId,deletarPaciente,cadastrarPacientes,pegarTodasRequisicoes,atualizarPaciente,todasRequisicoes,cadastrarRequisicao,deletarRequisicao}
