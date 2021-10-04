@@ -54,11 +54,11 @@ module.exports = (app, repository) => {
         const converte = parseInt(id);
         try {
             //Response é a resposta do axios , mas eu tiro o data de dentro do response com a desestruturação
-            const { data } = await axios('http://localhost:3333/historico_preco');
+            const { data } = await axios('http://localhost:3333/historicoDePreco');
             const nomeExiste = data.filter(x => x.id_historico);
-            const filtrar = nomeExiste.filter(x => x.id_historico === converte)
+            const filtrar = nomeExiste.filter(x => x.id_historico == converte)
             console.log(filtrar);
-            return res.json(data);
+            return res.json(filtrar);
             
         } catch (error) {
             console.log('Errou!');
@@ -106,9 +106,8 @@ module.exports = (app, repository) => {
         const id_log = req.params.id;
         const paciente = await repository.todasRequisicoes();
 
+        
         const pacienteAlredyExist = paciente.some(id => id.id_login === id_log);
-        console.log(pacienteAlredyExist);
-        console.log(id_log);
         if(!pacienteAlredyExist){
             res.status(400).json({error: 'paciente não existe'});
         }else{
