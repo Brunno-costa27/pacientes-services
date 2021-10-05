@@ -54,7 +54,7 @@ module.exports = (app, repository) => {
         const converte = parseInt(id);
         try {
             //Response é a resposta do axios , mas eu tiro o data de dentro do response com a desestruturação
-            const { data } = await axios('http://localhost:3333/historicoDePreco');
+            const { data } = await axios('http://portalfarmacia.brazilsouth.cloudapp.azure.com:3333/historicoDePreco');
             const nomeExiste = data.filter(x => x.id_historico);
             const filtrar = nomeExiste.filter(x => x.id_historico == converte)
             console.log(filtrar);
